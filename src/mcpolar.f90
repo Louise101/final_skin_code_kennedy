@@ -1,13 +1,13 @@
 program mcpolar
 
- use mpi
+use mpi
 
 !shared data
 use constants
 use photon_vars
 use iarray
 use opt_prop
-use utils, only : blue, bold, colour, red, white_b, black, str, estimateSimulationTime
+use utils, only : blue, bold, colour, red, white_b, black, str
 use iso_fortran_env, only: int64
 
 !subroutines
@@ -59,41 +59,71 @@ open(10,file=trim(resdir)//'input.params',status='old')
    close(10)
    
  !****** Read in optical property files
-call readfile_array2D('g.csv', g, 0, 2, cnt)
+!call readfile_array2D('g.dat', g,0,1,cnt)
+!g_length=cnt
+!call readfile_array2D('ua_sc.dat', ua_sc,0,1,cnt)
+!ua_sc_length=cnt
+!call readfile_array2D('us_sc.dat', us_sc,0,1,cnt)
+!us_sc_length=cnt
+!call readfile_array2D('ua_e.csv', ua_e,0,2,cnt)
+!ua_e_length=cnt
+!call readfile_array2D('us_e.dat', us_e,0,1,cnt)
+!us_e_length=cnt
+!call readfile_array2D('ua_m.dat', ua_m,0,1,cnt)
+!ua_m_length=cnt
+!call readfile_array2D('us_e.dat', us_m,0,1,cnt)
+!us_m_length=cnt
+!call readfile_array2D('ua_e.csv', ua_b,0,2,cnt)
+!ua_b_length=cnt
+!call readfile_array2D('us_e.dat', us_b,0,1,cnt)
+!us_b_length=cnt
+!call readfile_array2D('ua_d.dat', ua_d,0,1,cnt)
+!ua_d_length=cnt
+!call readfile_array2D('us_d.dat', us_d,0,1,cnt)
+!us_d_length=cnt
+!call readfile_array2D('ua_h.dat', ua_h,0,1,cnt)
+!ua_h_length=cnt
+!call readfile_array2D('us_h.dat', us_h,0,1,cnt)
+!us_h_length=cnt
+
+!print*, ua_e
+
+call readfile_array2D('g.txt', g, 0, 2, cnt)
 g_length=cnt
-call readfile_array2D('ua_sc.csv', ua_sc, 0, 2, cnt)
+call readfile_array2D('ua_sc.txt', ua_sc, 0, 2, cnt)
 ua_sc_length=cnt
-call readfile_array2D('us_sc.csv', us_sc, 0, 2, cnt)
+call readfile_array2D('us_sc.txt', us_sc, 0, 2, cnt)
 us_sc_length=cnt
 call readfile_array2D('ua_e.csv', ua_e, 0, 2, cnt)
 ua_e_length=cnt
-call readfile_array2D('us_e.csv', us_e, 0, 2, cnt)
+call readfile_array2D('us_e.txt', us_e, 0, 2, cnt)
 us_e_length=cnt
 call readfile_array2D('ua_m.csv', ua_m, 0, 2, cnt)
 ua_m_length=cnt
-call readfile_array2D('us_e.csv', us_m, 0, 2, cnt)
+call readfile_array2D('us_e.txt', us_m, 0, 2, cnt)
 us_m_length=cnt
-call readfile_array2D('ua_b.csv', ua_b, 0, 2, cnt)
+call readfile_array2D('ua_b.txt', ua_b, 0, 2, cnt)
 ua_b_length=cnt
-call readfile_array2D('us_e.csv', us_b, 0, 2, cnt)
+call readfile_array2D('us_e.txt', us_b, 0, 2, cnt)
 us_b_length=cnt
-call readfile_array2D('ua_d.csv', ua_d, 0, 2, cnt)
+call readfile_array2D('ua_d.txt', ua_d, 0, 2, cnt)
 ua_d_length=cnt
-call readfile_array2D('us_d.csv', us_d, 0, 2, cnt)
+call readfile_array2D('us_d.txt', us_d, 0, 2, cnt)
 us_d_length=cnt
-call readfile_array2D('ua_h.csv', ua_h, 0, 2, cnt)
+call readfile_array2D('ua_h.txt', ua_h, 0, 2, cnt)
 ua_h_length=cnt
-call readfile_array2D('us_h.csv', us_h, 0, 2, cnt)
+call readfile_array2D('us_h.txt', us_h, 0, 2, cnt)
 us_h_length=cnt
 
 
-do w=986, 987!start loop over w
+do w=200,400 !start loop over w
 
 call zarray
 
 
 ! set seed for rnd generator. id to change seed for each process
-iseed=-1356478+id
+iseed=-734128+id
+
 iseed=-abs(iseed)  ! Random number seed must be negative for ran2
 
 call init_opt(w)
@@ -125,15 +155,16 @@ do j = 1, nphotons
    !call estimateSimulationTime(start2, j, 10000, nphotons, id)
 
    if(mod(j,10000) == 0)then
-      print *, j,' scattered photons completed on core: ',id, w
+      print *, j,' scattered photons completed on core: ',id,w
    end if
+
     
 !***** Release photon from point source *******************************
    call evenDis(xcell,ycell,zcell,iseed)
 !****** Find scattering location
-
       call tauint1(xcell,ycell,zcell,tflag,iseed,delta)
-!******** Photon scatters in grid until it exits (tflag=TRUE) 
+!******** Photon scatters in grid until it exits (tflag=TRUE)
+
       do while(tflag.eqv..FALSE.)
 
          ran = ran2(iseed)
@@ -150,7 +181,7 @@ do j = 1, nphotons
          call tauint1(xcell,ycell,zcell,tflag,iseed,delta)
 
       end do
-end do      ! end loop over nph photons
+end do      ! end loop over loop over n photons
 
 
 jmeanGLOBAL = jmean

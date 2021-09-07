@@ -10,7 +10,7 @@ List of files + description
         iarray.f90           contains the arrays variables
         mcpolar.f90          main program
         ran2.f               random number generator, from numerical recipes
-        subs.f90             inits arrays and directory paths
+        subs.f90             inits arrays and directory paths 
         writer.f90           writes out results
         inttau2.f90          moves the photon a randomly sampled optical distance. also contains fresnel and peeling off routines
         opt_prop.f90         tracks optical properties of the system
@@ -18,19 +18,3 @@ List of files + description
         utils.f90            various helper routines
         install.sh           installs code. setups directories and runs code
 
-files to change for adapting stratum corneum size
-
-              change zmax in input.params to:
-              0.2505 for 30um sc
-              0.25 for 20um sc
-              0.24975 for 15um sc
-              0.2495 for 10um sc
-              0.249 for 0um sc
-
-              un-comment selected sc thickness layers in subs.f90 - make sure the rest are commented out
-
-              select correct sc_width, sc_z_vox, z-face setup loop and opticalpropgrid subroutines(X2) in gridset.f90
-
-              select correct k range in the normalising do loops in writer.f90 - also remember to change file name!
-
-              select correct nzg value in constants.f90

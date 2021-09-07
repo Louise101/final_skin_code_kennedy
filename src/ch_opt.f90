@@ -78,7 +78,7 @@ h_kappa=h_mus + h_mua
 h_albedo=h_mus/h_kappa
 
 
-
+!print*, e_mus, e_mua
 end subroutine init_opt
    
    subroutine init_opt1

@@ -70,7 +70,7 @@ module sourceph_mod
         	end if
         	
    
-   	    phi = TWOPI * ran2(iseed)
+   		   phi = TWOPI * ran2(iseed)
             cosp = cos(phi)
             sinp = sin(phi)     
             cost = 1.d0 !direct irradiation
@@ -90,52 +90,6 @@ module sourceph_mod
    
             
         end subroutine evenDis
-        
-        
-        
-        subroutine beam(xcell, ycell, zcell, iseed)
-   	! Emits photons evenly across the top of the grid 
-   	
-   	use constants, only : nxg, nyg, nzg, xmax, ymax, zmax, TWOPI
-        use photon_vars
-        
-        implicit none
-        
-        integer, intent(OUT)   :: xcell, ycell, zcell 
-        integer, intent(INOUT) :: iseed
-   
-        real :: ran2, theta, spotradius, r
-       
-        	 !changed zp as photons were being inputted from the bottom of the grid instead of the top.        
-        	spotradius=0.005
-        	theta=ran2(iseed) * TWOPI
-        	
-        	zp = -zmax + (1.d-5 * (2.d0*zmax/1190))
-        	r=ran2(iseed) * (spotradius)**2
-        	xp=sqrt(r) * cos(theta)
-        	yp=sqrt(r) * sin(theta)
-        	
-   
-   	    phi = TWOPI * ran2(iseed)
-            cosp = cos(phi)
-            sinp = sin(phi)     
-            cost = 1.d0 !direct irradiation
-       !     cost=ran2(iseed) !diffuse irradiation
-            sint = sqrt(1. - cost**2) 
-
-            nxp = sint * cosp  
-            nyp = sint * sinp
-            nzp = cost
-
-            !*************** Linear Grid *************************
-            xcell=int(nxg*(xp+xmax)/(2.*xmax))+1
-            ycell=int(nyg*(yp+ymax)/(2.*ymax))+1
-            zcell=int(nzg*(zp+zmax)/(2.*zmax))+1
-            !*****************************************************
-           
-   
-            
-        end subroutine beam
 
         real function ranu(a, b, iseed)
 

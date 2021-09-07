@@ -22,62 +22,61 @@ MODULE gridset_mod
 
             integer             :: i, j, k,w, sc_vox, e_vox,b_vox, d_vox
             real                :: x, y, z, taueq1, taupole1, taueq2, taupole2
-
+           
             real 			    :: a,b, sine, sc, e, m, ba, d
             real :: Vmel, wavelen, ua_mel, Vmel_adapted, m_vox, pmel_vox
             integer:: sc_z_vox, e_z_vox, m_z_vox,b_z_vox, d_z_vox, h_z_vox
-
+          
             real:: sc_width, e_width, m_width, d_width, h_width, b_width
-
-
+            
+            
             Vmel=0.02
             wavelen= w
-
+            
 
             if(id == 0)then
                 print*, ' '
                 print *, 'Setting up density grid....'
             end if
-
-
+            
+            
             !h_depth is to bottom of the grid.
-
+            
             !calculate layer_nzg for each layer
-
-            !thicknesess of each layer section with different resolution
 
             sc_width=0.003 !30um sc
             !sc_width=0.002 !20um sc
             !sc_width=0.0015 !15um sc
             !sc_width=0001 !10um sc
             !sc_width=0 !0um sc
-
+            
+            !thicknesess of each layer section with different resolution 
             e_width=0.0053
-            m_width=0.0032
+            m_width=0.0032 
             b_width=0.0032
             d_width=0.1970
             h_width=0.3
-
+           
             sc_z_vox=300 !30um sc
             !sc_z_vox=200 !20um sc
             !sc_z_vox=150 !15um sc
             !sc_z_vox=100 !10um sc
-            !sc_z_vox=0 !0um sc
-
+            !sc_z_vox=0 !0um sc 
+            
             e_z_vox=100
             m_z_vox=100
             b_z_vox=100
             d_z_vox=150
             h_z_vox=150
-
+            
             sc_nzg= (2.*zmax)/(sc_width/sc_z_vox)
             e_nzg= (2.*zmax)/(e_width/e_z_vox)
             m_nzg=(2.*zmax)/(m_width/m_z_vox)
             b_nzg= (2.*zmax)/(b_width/b_z_vox)
             d_nzg= (2.*zmax)/(d_width/d_z_vox)
             h_nzg= (2.*zmax)/(h_width/h_z_vox)
-
-
+            
+            
 
             ! setup grid faces
             do i = 1, nxg + 1
@@ -87,9 +86,8 @@ MODULE gridset_mod
             do i = 1, nyg + 1
                 yface(i) = (i - 1) * 2. * ymax/nyg
             end do
-
-
-        !  *****  30um sc *****************************
+            
+  !  *****  30um sc *****************************
 
             do i = 1, 301
               zface(i) = (i - 1) * 2. * zmax/sc_nzg
@@ -227,80 +225,83 @@ MODULE gridset_mod
   !  end do
 
 
-
-
-
-
-
-
+            
 
             !call init_opt
             refrac(:,:,:) = n1
 
-            !set up optical properties grid
-
+            !set up optical properties grid 
+            
        sine=0.003*(SIN(x/0.0015)*COS(y/0.0015))
+       
+        
+  		
 
 
-
-
-
-
-
+ 
+  		
 !set up inital grid optical properties
 
 !********** 30um sc ********************************
 call opticalpropgrid(1, 300, sc_nzg) ! sets 0.002cm sc with 200 voxel z depth
-call opticalpropgrid(301, 400, e_nzg)!sets 0.0064cm epidermis with 200 voxel z depth
+call opticalpropgrid(301, 400, e_nzg)!sets 0.0064cm epidermis with 200 voxel zdepth
 call opticalpropgrid(401, 500, m_nzg)!sets 0.001cm melanin 100 voxel z depth
 call opticalpropgrid(501, 600, b_nzg)!sets 0.001cm basal with 100 voxel z depth
 call opticalpropgrid(601, 750, d_nzg)!sets 0.2cm dermis with 100 voxel z depth
-call opticalpropgrid(751, nzg, h_nzg)!sets rest of grid hypodermis with 100 voxel z depth
+call opticalpropgrid(751, nzg, h_nzg)!sets rest of gri
 
 !********** 20um sc ********************************
 !call opticalpropgrid(1, 200, sc_nzg) ! sets 0.002cm sc with 200 voxel z depth
-!call opticalpropgrid(201, 300, e_nzg)!sets 0.0064cm epidermis with 200 voxel z depth
+!call opticalpropgrid(201, 300, e_nzg)!sets 0.0064cm epidermis with 200 voxel z
+!depth
 !call opticalpropgrid(301, 400, m_nzg)!sets 0.001cm melanin 100 voxel z depth
 !call opticalpropgrid(401, 500, b_nzg)!sets 0.001cm basal with 100 voxel z depth
 !call opticalpropgrid(501, 650, d_nzg)!sets 0.2cm dermis with 100 voxel z depth
-!call opticalpropgrid(651, nzg, h_nzg)!sets rest of grid hypodermis with 100 voxel z depth
+!call opticalpropgrid(651, nzg, h_nzg)!sets rest of grid hypodermis with 100
+!voxel z depth
 
 !********** 15um sc ********************************
 !call opticalpropgrid(1, 150, sc_nzg) ! sets 0.002cm sc with 200 voxel z depth
-!call opticalpropgrid(151, 250, e_nzg)!sets 0.0064cm epidermis with 200 voxel z depth
+!call opticalpropgrid(151, 250, e_nzg)!sets 0.0064cm epidermis with 200 voxel z
+!depth
 !call opticalpropgrid(251, 350, m_nzg)!sets 0.001cm melanin 100 voxel z depth
 !call opticalpropgrid(351, 450, b_nzg)!sets 0.001cm basal with 100 voxel z depth
 !call opticalpropgrid(451, 600, d_nzg)!sets 0.2cm dermis with 100 voxel z depth
-!call opticalpropgrid(601, nzg, h_nzg)!sets rest of grid hypodermis with 100 voxel z depth
+!call opticalpropgrid(601, nzg, h_nzg)!sets rest of grid hypodermis with 100
+!voxel z depth
 
 !********** 10um sc ********************************
 !call opticalpropgrid(1, 100, sc_nzg) ! sets 0.002cm sc with 200 voxel z depth
-!call opticalpropgrid(101, 200, e_nzg)!sets 0.0064cm epidermis with 200 voxel z depth
+!call opticalpropgrid(101, 200, e_nzg)!sets 0.0064cm epidermis with 200 voxel z
+!depth
 !call opticalpropgrid(201, 300, m_nzg)!sets 0.001cm melanin 100 voxel z depth
 !call opticalpropgrid(301, 400, b_nzg)!sets 0.001cm basal with 100 voxel z depth
 !call opticalpropgrid(401, 550, d_nzg)!sets 0.2cm dermis with 100 voxel z depth
-!call opticalpropgrid(551, nzg, h_nzg)!sets rest of grid hypodermis with 100 voxel z depth
+!call opticalpropgrid(551, nzg, h_nzg)!sets rest of grid hypodermis with 100
+!voxel z depth
 
 !********** 0um sc ********************************
-!call opticalpropgrid(1, 100, e_nzg)!sets 0.0064cm epidermis with 200 voxel z depth
+!call opticalpropgrid(1, 100, e_nzg)!sets 0.0064cm epidermis with 200 voxel z
+!depth
 !call opticalpropgrid(101, 200, m_nzg)!sets 0.001cm melanin 100 voxel z depth
 !call opticalpropgrid(201, 300, b_nzg)!sets 0.001cm basal with 100 voxel z depth
 !call opticalpropgrid(301, 450, d_nzg)!sets 0.2cm dermis with 100 voxel z depth
-!call opticalpropgrid(451, nzg, h_nzg)!sets rest of grid hypodermis with 100 voxel z depth
+!call opticalpropgrid(451, nzg, h_nzg)!sets rest of grid hypodermis with 100
+!voxel z depth
 
-
+           
              !******************* Count Voxels per layer ******************************************
-
+            
             sc_vox=0
             e_vox=0
             m_vox=0
             b_vox=0
             d_vox=0
-
-              do i = 1, nxg
+            
+              do i = 1, nxg           
            	do j = 1, nyg
-            		do k = 1,nzg
-
+            		do k = 1,nzg 
+            		
             		if (rhokap(i,j,k) .eq. sc_kappa) then
             			sc_vox= sc_vox + 1
             		elseif(rhokap(i,j,k) .eq. e_kappa) then
@@ -311,99 +312,105 @@ call opticalpropgrid(751, nzg, h_nzg)!sets rest of grid hypodermis with 100 voxe
             			b_vox=b_vox+1
             		elseif( rhokap(i,j,k) .eq.d_kappa) then
             			d_vox=d_vox + 1
-            		end if
-
+            		end if 
+            		            		            		            	
             		end do
             	end do
             end do
-
-
-
-
-
-
+            
+            
+             
+            
+          
+            
             !****************** Calulate melanin layer Vmel and absorption based on layer thickness ***********************
-
+            
             pmel_vox= Vmel * (e_vox + m_vox)
-
+            
             Vmel_adapted = pmel_vox / m_vox
-!print*, pmel_vox, m_vox, e_vox
-
-
-
+                     
+            
             ua_mel = (6.6 * 10.**(11) * wavelen **(-3.33) * Vmel_adapted) + e_mua
-
+            
             m_kappa  = m_mus + ua_mel
             m_albedo = m_mus / m_kappa
-
-            print*, 'adaptded melanin volume', Vmel_adapted
-
-
+            
+           ! print*, 'adaptded melanin volume', Vmel_adapted
+            
+     
 !set up optcial properties grid with new melanin absorption
 
 !********** 30um sc ********************************
 call opticalpropgrid(1, 300, sc_nzg) ! sets 0.002cm sc with 200 voxel z depth
-call opticalpropgrid(301, 400, e_nzg)!sets 0.0064cm epidermis with 200 voxel z depth
+call opticalpropgrid(301, 400, e_nzg)!sets 0.0064cm epidermis with 200 voxel zdepth
 call opticalpropgrid(401, 500, m_nzg)!sets 0.001cm melanin 100 voxel z depth
 call opticalpropgrid(501, 600, b_nzg)!sets 0.001cm basal with 100 voxel z depth
 call opticalpropgrid(601, 750, d_nzg)!sets 0.2cm dermis with 100 voxel z depth
-call opticalpropgrid(751, nzg, h_nzg)!sets rest of grid hypodermis with 100 voxel z depth
+call opticalpropgrid(751, nzg, h_nzg)!sets rest of grid hypodermis with 100voxel z depth
 
 !********** 20um sc ********************************
 !call opticalpropgrid(1, 200, sc_nzg) ! sets 0.002cm sc with 200 voxel z depth
-!call opticalpropgrid(201, 300, e_nzg)!sets 0.0064cm epidermis with 200 voxel z depth
+!call opticalpropgrid(201, 300, e_nzg)!sets 0.0064cm epidermis with 200 voxel z
+!depth
 !call opticalpropgrid(301, 400, m_nzg)!sets 0.001cm melanin 100 voxel z depth
 !call opticalpropgrid(401, 500, b_nzg)!sets 0.001cm basal with 100 voxel z depth
 !call opticalpropgrid(501, 650, d_nzg)!sets 0.2cm dermis with 100 voxel z depth
-!call opticalpropgrid(651, nzg, h_nzg)!sets rest of grid hypodermis with 100 voxel z depth
+!call opticalpropgrid(651, nzg, h_nzg)!sets rest of grid hypodermis with 100
+!voxel z depth
 
 !********** 15um sc ********************************
 !call opticalpropgrid(1, 150, sc_nzg) ! sets 0.002cm sc with 200 voxel z depth
-!call opticalpropgrid(151, 250, e_nzg)!sets 0.0064cm epidermis with 200 voxel z depth
+!call opticalpropgrid(151, 250, e_nzg)!sets 0.0064cm epidermis with 200 voxel z
+!depth
 !call opticalpropgrid(251, 350, m_nzg)!sets 0.001cm melanin 100 voxel z depth
 !call opticalpropgrid(351, 450, b_nzg)!sets 0.001cm basal with 100 voxel z depth
 !call opticalpropgrid(451, 600, d_nzg)!sets 0.2cm dermis with 100 voxel z depth
-!call opticalpropgrid(601, nzg, h_nzg)!sets rest of grid hypodermis with 100 voxel z depth
+!call opticalpropgrid(601, nzg, h_nzg)!sets rest of grid hypodermis with 100
+!voxel z depth
 
 !********** 10um sc ********************************
 !call opticalpropgrid(1, 100, sc_nzg) ! sets 0.002cm sc with 200 voxel z depth
-!call opticalpropgrid(101, 200, e_nzg)!sets 0.0064cm epidermis with 200 voxel z depth
+!call opticalpropgrid(101, 200, e_nzg)!sets 0.0064cm epidermis with 200 voxel z
+!depth
 !call opticalpropgrid(201, 300, m_nzg)!sets 0.001cm melanin 100 voxel z depth
 !call opticalpropgrid(301, 400, b_nzg)!sets 0.001cm basal with 100 voxel z depth
 !call opticalpropgrid(401, 550, d_nzg)!sets 0.2cm dermis with 100 voxel z depth
-!call opticalpropgrid(551, nzg, h_nzg)!sets rest of grid hypodermis with 100 voxel z depth
+!call opticalpropgrid(551, nzg, h_nzg)!sets rest of grid hypodermis with 100
+!voxel z depth
 
 !********** 0um sc ********************************
-!call opticalpropgrid(1, 100, e_nzg)!sets 0.0064cm epidermis with 200 voxel z depth
+!call opticalpropgrid(1, 100, e_nzg)!sets 0.0064cm epidermis with 200 voxel z
+!depth
 !call opticalpropgrid(101, 200, m_nzg)!sets 0.001cm melanin 100 voxel z depth
 !call opticalpropgrid(201, 300, b_nzg)!sets 0.001cm basal with 100 voxel z depth
 !call opticalpropgrid(301, 450, d_nzg)!sets 0.2cm dermis with 100 voxel z depth
-!call opticalpropgrid(451, nzg, h_nzg)!sets rest of grid hypodermis with 100 voxel z depth
-
+!call opticalpropgrid(451, nzg, h_nzg)!sets rest of grid hypodermis with 100
+!voxel z depth
+ 
 
             !****************** Add cavity into skin to simulate a cut ****************************
-
-
-
+          
+            
+          
         ! a=4
          !b=2
 
-
+            
             !do i=1,nxg
             !x = (i-1)*2.*xmax/nxg
             	!do j=1, nyg
             	!y=(j-1)*2.*ymax/nyg
             		!do k=1, nzg
-            		!z=(k-1)*2.*zmax/nzg
-            		!if(sqrt(a**2*(x-0.05)**2+b**2*(y-0.05)**2) .le. -(z-0.075)) then
+            		!z=(k-1)*2.*zmax/nzg 
+           		!if(sqrt(a**2*(x-0.05)**2+b**2*(y-0.05)**2) .le. -(z-0.075)) then 
             		!rhokap(i,j,k)=0
             		!albedoar(i,j,k)=0
             		!end if
             		!end do
             	!end do
             !end do
-
-
+            		
+            
 
             !****************** Calculate equatorial and polar optical depths ****
             taueq1   = 0.
@@ -435,3 +442,5 @@ call opticalpropgrid(751, nzg, h_nzg)!sets rest of grid hypodermis with 100 voxe
             ! stop
         end subroutine gridset
 end MODULE gridset_mod
+
+

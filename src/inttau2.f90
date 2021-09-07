@@ -171,7 +171,7 @@ CONTAINS
         end if
 
         wall_dist = min(dx, dy, dz)
-        if(wall_dist < 0.)print'(A,7F9.5)','dcell < 0.0 warning! ',wall_dist,dx,dy,dz,nxp,nyp,nzp
+        if(wall_dist < 0.)print'(A,7F9.5)','dcell < 0.0 warning! ',wall_dist,dx,dy,dz,nxp,nyp,nzp,xcur,ycur,zcur
         if(wall_dist == dx)dir=(/.TRUE., .FALSE., .FALSE./)
         if(wall_dist == dy)dir=(/.FALSE., .TRUE., .FALSE./)
         if(wall_dist == dz)dir=(/.FALSE., .FALSE., .TRUE./)

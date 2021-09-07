@@ -23,7 +23,7 @@ function makebuild
 
   if [ "$debug" = 1 ];then
     make clean && make debug $string
-elif [ "$NUM_CORES" = 0 ];then
+elif [ "$SLURM_NPROCS" = 0 ];then
     make clean && make build $string
 else
     if [ "$comp" = 'gnu' ];then
@@ -70,7 +70,7 @@ function run
   done
 
 
-  if [ "$NUM_CORES" = "0" ]; then #just make code
+  if [ "$SLURM_NPROCS" = "0" ]; then #just make code
       exit 0
   fi
   echo $(pwd)
@@ -79,23 +79,24 @@ function run
   clear
   cd ../bin
 
-  if [ "$NUM_CORES" = "1" ]; then
+  if [ "$SLURM_NPROCS" = "1" ]; then
       ./mcgrid
   else
     if [ $comp = 'gnu' ];then
-      /usr/local/bin/mpirun -n $NUM_CORES ./mcgrid
-      #/opt/openmpi/bin/mpirun -n $NUM_CORES ./mcgrid
+       /gpfs1/apps/software/devts8/bin/mpirun -n $SLURM_NPROCS ./mcgrid
+     # /usr/local/bin/mpirun -n $SLURM_NPROCS ./mcgrid
+     # /opt/openmpi/bin/mpirun -n $SLURM_NPROCS ./mcgrid
     elif [ $comp = 'intel' ];then
-      mpirun -n $NUM_CORES ./mcgrid
+      mpirun -n $SLURM_NPROCS ./mcgrid
     fi
   fi
 }
 
 #defaults
-NUM_CORES=1
+SLURM_NPROCS=1
 debug=0
 help=0
-comp="gnu"
+comp="gnu" 
 
 set -e
 
@@ -103,14 +104,14 @@ createdirs
 
 while [ "$1" != "" ]; do
     case $1 in
-        -n | --cores )          NUM_CORES=$2
+        -n | --cores )          SLURM_NPROCS=$2
                                 ;;
         -c | --comp )           comp=$2
                                 ;;
         -h | --help )           showhelp
                                 exit
                                 ;;
-        -m | --make )           NUM_CORES=0
+        -m | --make )           SLURM_NPROCS=0
                                 makebuild
                                 exit
                                 ;;

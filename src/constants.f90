@@ -15,10 +15,6 @@ MODULE constants
     !integer, parameter :: nxg=100, nyg=100, nzg=700 !10um sc
     !integer, parameter :: nxg=100, nyg=100, nzg=600 !0um sc
 
-
-
-
-
     real,    parameter :: PI=4.*atan(1.), TWOPI=2.*PI, OFFSET=1.e-2*(2.*.5/nxg)
     real               :: xmax, ymax, zmax, v(3), costim, sintim, cospim, sinpim
     character(len=255) :: cwd, homedir, fileplace, resdir

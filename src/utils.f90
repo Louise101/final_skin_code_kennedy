@@ -71,7 +71,7 @@ module utils
     end interface
 
     private
-    public :: str, swap, colour, mem_free, chdir, estimateSimulationTime
+    public :: str, swap, colour, chdir
     public :: bold, italic, underline, strikethrough, black, red, green, yellow, blue, magenta, cyan, white
     public :: black_b, red_b, green_b, yellow_b, blue_b, magenta_b, cyan_b, white_b
 
@@ -356,59 +356,59 @@ module utils
             end if
         end function colour_real8
         
-          subroutine estimateSimulationTime(startTime, currentPhoton, fraction, totalPhotons, id)
+!          subroutine estimateSimulationTime(startTime, currentPhoton, fraction, totalPhotons, id)
         ! estimate time for simulation to complete
-            use iso_fortran_env, only : int64
+ !           use iso_fortran_env, only : int64
 
 
-            implicit none
+ !           implicit none
             
-            integer(kind=int64), intent(IN) :: totalPhotons, currentPhoton
-            integer, intent(IN) :: id, fraction
-            real,    intent(IN) :: startTime
+  !          integer(kind=int64), intent(IN) :: totalPhotons, currentPhoton
+   !         integer, intent(IN) :: id, fraction
+    !        real,    intent(IN) :: startTime
 
-            real    :: finish, tmp
+     !       real    :: finish, tmp
 
             ! get estimate for how long simulation will take
-            if(currentPhoton == fraction .and. id == 0)then
-                call cpu_time(finish)
-                print*,' '
-                tmp = (finish-startTime)/real(fraction)*real(totalPhotons)
-                if(tmp >= 60.)then
-                    tmp = tmp / 60.
-                    if(tmp > 60)then
-                        tmp = tmp / 60.
-                        print*,str(tmp),' hrs'
-                    else
-                        print*,str(tmp),' mins'
-                    end if
-                else
-                    print*,str(tmp),' s'
-                end if
-                print*,' '
-            end if
+      !      if(currentPhoton == fraction .and. id == 0)then
+!                call cpu_time(finish)
+       !         print*,' '
+        !        tmp = (finish-startTime)/real(fraction)*real(totalPhotons)
+         !       if(tmp >= 60.)then
+          !          tmp = tmp / 60.
+           !         if(tmp > 60)then
+            !            tmp = tmp / 60.
+             !           print*,str(tmp),' hrs'
+              !      else
+               !         print*,str(tmp),' mins'
+                !    end if
+              !  else
+               !     print*,str(tmp),' s'
+              !  end if
+              !  print*,' '
+           ! end if
 
-        end subroutine estimateSimulationTime
+       ! end subroutine estimateSimulationTime
 
 
-        function mem_free()
+       ! function mem_free()
 
-            use iso_fortran_env, only : int64 !as numbers are large
+           ! use iso_fortran_env, only : int64 !as numbers are large
 
-            implicit none
+          !  implicit none
 
-            integer(int64) :: mem_free
+         !   integer(int64) :: mem_free
 
-            integer(int64)    :: i
-            character(len=15) :: tmp
-            integer           :: u
+        !    integer(int64)    :: i
+       !     character(len=15) :: tmp
+      !      integer           :: u
 
-            open(newunit=u,file='/proc/meminfo',status='old')
+     !       open(newunit=u,file='/proc/meminfo',status='old')
 
-            read(u,*)tmp, i
-            read(u,*)tmp, i
-            read(u,*)tmp, i
+    !        read(u,*)tmp, i
+   !         read(u,*)tmp, i
+  !          read(u,*)tmp, i
             
-            mem_free = i * 1024_int64 !convert from Kib to b 
-        end function mem_free
+ !           mem_free = i * 1024_int64 !convert from Kib to b 
+!        end function mem_free
 end module utils
